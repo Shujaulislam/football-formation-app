@@ -1,0 +1,25 @@
+{
+  "players": {
+    "GK": ["Alisson"],
+    "DF": {
+      "CB": ["Kim", "Ramos", "Sandro", "Manolas", "Van Dijk", "Alaba"],
+      "LB": ["Galan", "Alba", "Hernandez"],
+      "RB": ["Cancelo", "Hakimi", "Alexander-Arnold"]
+    },
+    "MF": {
+      "AM": ["De Bruyne", "Bellingham", "Bruno"],
+      "DM": ["Rodri", "Kante"],
+      "CM": ["McTominay", "Valverde", "Gundogan"],
+      "LM": [],
+      "RM": ["Lorente"],
+      "LWB": ["Girmaldo"],
+      "RWB": ["Dumfries"]
+    },
+    "FW": {
+      "CF": ["Ronaldo", "Haland", "Diego Costa", "Mbappe"],
+      "LW": ["Vinicius JR", "Neymar"],
+      "RW": ["Mo Salah", "Messi", "Saka", "Sterling"],
+      "SS": ["Bergkamp"]
+    }
+  }
+}

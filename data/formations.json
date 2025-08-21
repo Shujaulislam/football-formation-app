@@ -1,0 +1,212 @@
+{
+  "FORMATIONS": [
+    {
+      "formation": "4-4-2",
+      "sub-formations": [
+        {
+          "4-4-2": "Standard Flat",
+          "description": "Four in the back line, four midfielders flat, two strikers.",
+          "shape": "Flat lines",
+          "notes": "Classic balanced formation. Solid defensively and offensively with clear width. Ideal for wing play with crosses to two forwards."
+        },
+        {
+          "4-1-2-1-2": "Diamond in midfield",
+          "description": "Four defenders, a midfield diamond (CDM at base, two wide mids, CAM at tip), and a double striker.",
+          "shape": "Diamond midfield",
+          "notes": "Focuses control on central areas, effective for quick, intricate passes and overloads. Vulnerable wide due to narrow midfield."
+        },
+        {
+          "4-3-1-2": "Standard",
+          "description": "Four defenders, three midfielders (Three at base, one at tip,), and a double striker.",
+          "shape": "Triangle midfield",
+          "notes": "Concentrates play through the center. Good for possession-based play but risks being outflanked on sides."
+        },
+        {
+          "4-2-2-2": "Standard",
+          "description": "Four defenders, Four midfielders (Two at base, Two wide), and a double striker.",
+          "shape": "Inverted Trapezium midfield",
+          "notes": "Offers good balance between defense and attack. Wide midfielders support wingers, creating width and crossing opportunities."
+        },
+        {
+          "4-4-1-1": "Standard",
+          "description": "Four defenders, four midfielders (straight line), and two strikers one behind the other vertical positioned.",
+          "shape": "Straight line midfield",
+          "notes": "Provides a link-up forward behind the striker, useful for creative playmaking and holding up the ball."
+        },
+        {
+          "4-1-3-2": "Standard",
+          "description": "Four defenders, four midfielders (One at base, three in attack, just opposite or inverted triangle as in 4-3-1-2), and a double striker.",
+          "shape": "Inverted Triangle midfield",
+          "notes": "Supports quick transitions and attacking pressure with midfield runners while retaining defensive cover."
+        }
+      ]
+    },
+    {
+      "formation": "4-5-1",
+      "sub-formations": [
+        {
+          "4-5-1": "Standard Flat",
+          "description": "Four in the back line, five midfielders flat, one lone striker.",
+          "shape": "Flat lines",
+          "notes": "Defensively robust. Controls midfield and slows opponent attacks. Striker relies heavily on support from midfield."
+        },
+        {
+          "4-1-4-1": "",
+          "description": "Four defenders in the back line, five midfielders (one at base, makes a inverted equilateral triangle in the mid with left right extra mid to extend wings resulting in four in flat line attack positioned wide spaced), and a single striker.",
+          "shape": "Inverted Equilateral Triangle midfield",
+          "notes": "Emphasizes midfield dominance and wing play for supply, protects defense with a deep holding midfielder."
+        },
+        {
+          "4-2-3-1": "",
+          "description": "Four defenders in the back line, five midfielders (two at base equidistant, three in flat line attack positioned closed spaced optional middle one as CAM), and a single striker.",
+          "shape": "Equilateral Triangle midfield",
+          "notes": "Balanced formation that supports both attack and defense. CAM plays a key creative role feeding the striker."
+        },
+        {
+          "4-3-2-1": "Pyramid",
+          "description": "Four defenders in the back line, five midfielders (three at base equidistant, two in flat line attack positioned narrower than the middlefielder behind them), and a single striker.",
+          "shape": "Pyramid",
+          "notes": "Offers strong defensive shape with precise attacking. Pyramid structure enables control and quick passing combinations."
+        }
+      ]
+    },
+    {
+      "formation": "4-3-3",
+      "sub-formations": [
+        {
+          "4-3-3": "Standard Flat",
+          "description": "Four in the back line, three midfielders flat, three strikers.",
+          "shape": "Flat lines",
+          "notes": "Widely used attacking formation. Emphasizes wing play and high pressing with 3 forwards and 3 central mids."
+        },
+        {
+          "4-1-2-3": "Inverted Equilateral Triangle midfield",
+          "description": "Four defenders, three midfielders (Two at top, one at tip), and three strikers.",
+          "shape": "Inverted Equilateral Triangle midfield",
+          "notes": "Midfielders push higher for direct support; great for strong attacking formation with good balance."
+        },
+        {
+          "4-2-1-3": "Equilateral Triangle midfield",
+          "description": "Four defenders, two midfielders (Two at base, one at tip), and three strikers.",
+          "shape": "Equilateral Triangle midfield",
+          "notes": "Solid in defense and attack. Focused on controlling the midfield base while providing attacking guidance from CAM."
+        }
+      ]
+    },
+    {
+      "formation": "5-3-2",
+      "sub-formations": [
+        {
+          "5-3-2": "Standard Flat",
+          "description": "Five in the back line, three midfielders flat, two strikers.",
+          "shape": "Flat lines",
+          "notes": "Highly defensive, protects aggressively against wide attacks but can be vulnerable to quick central counters."
+        },
+        {
+          "5-2-1-2": "",
+          "description": "Five defenders, three midfielders triangle equal space two at base one at tip, two strikers.",
+          "shape": "Equilateral Triangle midfield",
+          "notes": "Midfield triangle supports central play and quick transitions to the two strikers."
+        }
+      ]
+    },
+    {
+      "formation": "5-2-3",
+      "sub-formations": [
+        {
+          "5-2-3": "Standard",
+          "description": "Five defenders, two midfielders (Two at midfield, wide), and three strikers.",
+          "shape": "standard",
+          "notes": "Offers strong rear defense with attacking options; midfielders tasked with covering a lot ground."
+        },
+        {
+          "5-2-2-1": "Standard",
+          "description": "Five defenders, two midfielders (Two at midfield, wide), triple strikers (one at tip, two lowered on wings closer to midfield).",
+          "shape": "standard",
+          "notes": "Tries to maximize attacking threat with three forwards, relying heavily on midfield support."
+        }
+      ]
+    },
+    {
+      "formation": "5-4-1",
+      "sub-formations": [
+        {
+          "5-4-1": "Standard Flat",
+          "description": "Five in the back line, four midfielders flat, one lone striker.",
+          "shape": "Flat lines",
+          "notes": "Defensively focused and solid, relies on lone striker’s work rate and team support."
+        },
+        {
+          "5-1-2-1-1": "Diamond",
+          "description": "Five defenders, a midfield diamond (CDM at base, two wide mids, CAM at tip), and a single striker.",
+          "shape": "Diamond midfield",
+          "notes": "Midfield diamond allows both attack support and defensive solidity, giving lone striker ample supply."
+        }
+      ]
+    },
+    {
+      "formation": "3-5-2",
+      "sub-formations": [
+        {
+          "3-5-2": "Standard",
+          "description": "Three defenders, five midfielders flat line, and two strikers.",
+          "shape": "Flat line",
+          "notes": "Flexible formation offering midfield dominance and two striker threat but needs defensively strong back 3."
+        },
+        {
+          "3-2-3-2": "Standard",
+          "description": "Three defenders, Five Midilfielders (two at base preferred CM or CDM or DM, + one at tip making triangle this is CAM positioned attack) two spread positioned in wings of mid, two strikers.",
+          "shape": "standard",
+          "notes": "Provides good balance between midfield solidity and attacking width with two strikers upfront."
+        },
+        {
+          "3-1-4-2": "Standard",
+          "description": "Three defenders, Five Midilfielders (one at base preferred DM or CDM, two at tip making a inverted triangle these are CAM positioned attack) two spread positioned in wings of mid, two strikers.",
+          "shape": "standard",
+          "notes": "Attacking formation that looks to overwhelm opponents with midfield numbers and two striker presence."
+        },
+        {
+          "3-4-1-2": "Standard",
+          "description": "Three defenders, Four Midilfielders, one at base preferred DM or CDM, two at tip making a inverted triangle these are CAM positioned attack) two spread positioned in wings of mid, two strikers.",
+          "shape": "standard",
+          "notes": "Compact formation focusing on central play and strong attacking midfield support for strikers."
+        },
+        {
+          "3-5-1-1": "Standard",
+          "description": "Three defenders, Five Midilfielders flat lined, two strikers one behind the other vertical positioned.",
+          "shape": "standard",
+          "notes": "Provides midfield control and mixes two striker roles with vertical striker support up front."
+        }
+      ]
+    },
+    {
+      "formation": "3-4-3",
+      "sub-formations": [
+        {
+          "3-4-3": "Standard",
+          "description": "Three defenders, four midfielders flat line, and three strikers.",
+          "shape": "Spread",
+          "notes": "Highly offensive formation that pushes wide players forward for maximum pressure."
+        },
+        {
+          "3-4-2-1": "lowered wingers",
+          "description": "Three defenders, four midfielders flat line, and three strikers one at tip and wingers lowered.",
+          "shape": "Spread",
+          "notes": "Encourages compact midfield with advanced striker support; wingers drop to create passing lanes."
+        },
+        {
+          "3-1-2-1-3": "Diamond Midfield",
+          "description": "Three defenders, four midfielders diamond, and three strikers flat line.",
+          "shape": "Diamond midfield Compact",
+          "notes": "Midfield diamond improves central control and supports fluid attack with three forwards."
+        },
+        {
+          "3-3-1-3": "Standard",
+          "description": "Three defenders, Four midfielders Three at base flat line one at tip optional CAM, and three strikers.",
+          "shape": "Compact",
+          "notes": "Compact setup focusing on midfield density and multiple attacking options."
+        }
+      ]
+    }
+  ]
+}
