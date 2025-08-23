@@ -9,7 +9,7 @@ import { PlayerPositionMatcher } from "@/components/player-position-matcher"
 import { SquadBuilder } from "@/components/squad-builder"
 import { FormationComparison } from "@/components/formation-comparison"
 import { PitchVisualizer } from "@/components/pitch-visualizer"
-import EnhancedPitchVisualizer from "@/components/enhanced-pitch-visualizer"
+
 import { Trophy, Users, Target, BarChart3, GitCompare, MapPin, Zap } from "lucide-react"
 
 export default function Home() {
@@ -45,43 +45,52 @@ export default function Home() {
       <main className="container mx-auto px-4 py-8">
         {/* Stats Overview */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-          <Card className="hover-lift border-primary/20 bg-gradient-to-r from-card to-primary/5">
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Total Formations</CardTitle>
-              <BarChart3 className="h-4 w-4 text-primary" />
+          <Card className="group relative overflow-hidden hover:shadow-lg transition-all duration-300 border-0 bg-gradient-to-br from-primary/90 to-primary/70 text-primary-foreground">
+            <div className="absolute -right-6 -top-6 h-24 w-24 rounded-full bg-white/10"></div>
+            <CardHeader className="relative z-10 flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-semibold tracking-wide text-primary-foreground/90">TOTAL FORMATIONS</CardTitle>
+              <div className="rounded-lg bg-white/20 p-2">
+                <BarChart3 className="h-5 w-5 text-white" />
+              </div>
             </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold text-primary">8</div>
-              <p className="text-xs text-muted-foreground">With 25+ sub-formations</p>
+            <CardContent className="relative z-10">
+              <div className="text-3xl font-bold tracking-tight">8</div>
+              <p className="mt-1 text-sm font-medium text-primary-foreground/80">With 25+ sub-formations</p>
             </CardContent>
           </Card>
 
-          <Card className="hover-lift border-secondary/20 bg-gradient-to-r from-card to-secondary/5">
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Available Players</CardTitle>
-              <Users className="h-4 w-4 text-secondary" />
+          <Card className="group relative overflow-hidden hover:shadow-lg transition-all duration-300 border-0 bg-gradient-to-br from-secondary/90 to-secondary/70 text-secondary-foreground">
+            <div className="absolute -right-6 -top-6 h-24 w-24 rounded-full bg-white/10"></div>
+            <CardHeader className="relative z-10 flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-semibold tracking-wide text-secondary-foreground/90">AVAILABLE PLAYERS</CardTitle>
+              <div className="rounded-lg bg-white/20 p-2">
+                <Users className="h-5 w-5 text-white" />
+              </div>
             </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold text-secondary">24</div>
-              <p className="text-xs text-muted-foreground">Across all positions</p>
+            <CardContent className="relative z-10">
+              <div className="text-3xl font-bold tracking-tight">24</div>
+              <p className="mt-1 text-sm font-medium text-secondary-foreground/80">Across all positions</p>
             </CardContent>
           </Card>
 
-          <Card className="hover-lift border-accent/20 bg-gradient-to-r from-card to-accent/5">
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Position Coverage</CardTitle>
-              <Target className="h-4 w-4 text-accent" />
+          <Card className="group relative overflow-hidden hover:shadow-lg transition-all duration-300 border-0 bg-gradient-to-br from-accent/90 to-accent/70 text-accent-foreground">
+            <div className="absolute -right-6 -top-6 h-24 w-24 rounded-full bg-white/10"></div>
+            <CardHeader className="relative z-10 flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-semibold tracking-wide text-accent-foreground/90">POSITION COVERAGE</CardTitle>
+              <div className="rounded-lg bg-white/20 p-2">
+                <Target className="h-5 w-5 text-white" />
+              </div>
             </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold text-accent">92%</div>
-              <p className="text-xs text-muted-foreground">Missing only LM position</p>
+            <CardContent className="relative z-10">
+              <div className="text-3xl font-bold tracking-tight">92%</div>
+              <p className="mt-1 text-sm font-medium text-accent-foreground/80">Missing only LM position</p>
             </CardContent>
           </Card>
         </div>
 
         {/* Main Tabs */}
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-          <TabsList className="grid w-full grid-cols-6 bg-card border">
+          <TabsList className="grid w-full grid-cols-5 bg-card border">
             <TabsTrigger
               value="formations"
               className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground transition-all duration-300"
@@ -117,13 +126,7 @@ export default function Home() {
               <MapPin className="h-4 w-4 mr-2" />
               Pitch View
             </TabsTrigger>
-            <TabsTrigger
-              value="enhanced-pitch"
-              className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-yellow-500 data-[state=active]:to-orange-500 data-[state=active]:text-black transition-all duration-300"
-            >
-              <Zap className="h-4 w-4 mr-2" />
-              Enhanced Pitch
-            </TabsTrigger>
+
           </TabsList>
 
           <TabsContent value="formations" className="animate-slide-in-right">
@@ -146,9 +149,7 @@ export default function Home() {
             <PitchVisualizer />
           </TabsContent>
 
-          <TabsContent value="enhanced-pitch" className="animate-slide-in-right">
-            <EnhancedPitchVisualizer />
-          </TabsContent>
+
         </Tabs>
       </main>
     </div>
