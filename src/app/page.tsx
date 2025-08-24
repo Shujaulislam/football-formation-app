@@ -1,20 +1,19 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { FormationVisualizer } from "@/components/formation-visualizer"
-import FormationVisualizerNew from "@/components/FormationVisualizer"
-import { PlayerPositionMatcher } from "@/components/player-position-matcher"
-import { SquadBuilder } from "@/components/squad-builder"
-import { FormationComparison } from "@/components/formation-comparison"
-import { PitchVisualizer } from "@/components/pitch-visualizer"
-
-import { Trophy, Users, Target, BarChart3, GitCompare, MapPin, Zap } from "lucide-react"
+import { useState } from "react";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { FormationVisualizer } from "@/components/formation-visualizer";
+import FormationVisualizerNew from "@/components/FormationVisualizer";
+import { PlayerPositionMatcher } from "@/components/player-position-matcher";
+import { SquadBuilder } from "@/components/squad-builder";
+import { FormationComparison } from "@/components/formation-comparison";
+import { PitchVisualizer } from "@/components/pitch-visualizer";
+import { Trophy, Users, Target, BarChart3, GitCompare, MapPin, Zap } from "lucide-react";
 
 export default function Home() {
-  const [activeTab, setActiveTab] = useState("formations")
+  const [activeTab, setActiveTab] = useState("formations");
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-card to-muted">
@@ -49,49 +48,65 @@ export default function Home() {
           <Card className="group relative overflow-hidden hover:shadow-lg transition-all duration-300 border-0 bg-gradient-to-br from-primary/90 to-primary/70 text-primary-foreground">
             <div className="absolute -right-6 -top-6 h-24 w-24 rounded-full bg-white/10"></div>
             <CardHeader className="relative z-10 flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-semibold tracking-wide text-primary-foreground/90">TOTAL FORMATIONS</CardTitle>
+              <CardTitle className="text-sm font-semibold tracking-wide text-primary-foreground/90">
+                TOTAL FORMATIONS
+              </CardTitle>
               <div className="rounded-lg bg-white/20 p-2">
                 <BarChart3 className="h-5 w-5 text-white" />
               </div>
             </CardHeader>
             <CardContent className="relative z-10">
               <div className="text-3xl font-bold tracking-tight">8</div>
-              <p className="mt-1 text-sm font-medium text-primary-foreground/80">With 25+ sub-formations</p>
+              <p className="mt-1 text-sm font-medium text-primary-foreground/80">
+                With 25+ sub-formations
+              </p>
             </CardContent>
           </Card>
 
           <Card className="group relative overflow-hidden hover:shadow-lg transition-all duration-300 border-0 bg-gradient-to-br from-secondary/90 to-secondary/70 text-secondary-foreground">
             <div className="absolute -right-6 -top-6 h-24 w-24 rounded-full bg-white/10"></div>
             <CardHeader className="relative z-10 flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-semibold tracking-wide text-secondary-foreground/90">AVAILABLE PLAYERS</CardTitle>
+              <CardTitle className="text-sm font-semibold tracking-wide text-secondary-foreground/90">
+                AVAILABLE PLAYERS
+              </CardTitle>
               <div className="rounded-lg bg-white/20 p-2">
                 <Users className="h-5 w-5 text-white" />
               </div>
             </CardHeader>
             <CardContent className="relative z-10">
               <div className="text-3xl font-bold tracking-tight">24</div>
-              <p className="mt-1 text-sm font-medium text-secondary-foreground/80">Across all positions</p>
+              <p className="mt-1 text-sm font-medium text-secondary-foreground/80">
+                Across all positions
+              </p>
             </CardContent>
           </Card>
 
           <Card className="group relative overflow-hidden hover:shadow-lg transition-all duration-300 border-0 bg-gradient-to-br from-accent/90 to-accent/70 text-accent-foreground">
             <div className="absolute -right-6 -top-6 h-24 w-24 rounded-full bg-white/10"></div>
             <CardHeader className="relative z-10 flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-semibold tracking-wide text-accent-foreground/90">POSITION COVERAGE</CardTitle>
+              <CardTitle className="text-sm font-semibold tracking-wide text-accent-foreground/90">
+                POSITION COVERAGE
+              </CardTitle>
               <div className="rounded-lg bg-white/20 p-2">
                 <Target className="h-5 w-5 text-white" />
               </div>
             </CardHeader>
             <CardContent className="relative z-10">
               <div className="text-3xl font-bold tracking-tight">92%</div>
-              <p className="mt-1 text-sm font-medium text-accent-foreground/80">Missing only LM position</p>
+              <p className="mt-1 text-sm font-medium text-accent-foreground/80">
+                Missing only LM position
+              </p>
             </CardContent>
           </Card>
         </div>
 
         {/* Main Tabs */}
-        <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-                      <TabsList className="grid w-full grid-cols-6 bg-card border">
+        <Tabs
+          value={activeTab}
+          onValueChange={setActiveTab}
+          className="space-y-6"
+        >
+          <TabsList className="grid w-full grid-cols-6 bg-card border">
             <TabsTrigger
               value="formations"
               className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground transition-all duration-300"
@@ -134,7 +149,6 @@ export default function Home() {
               <Zap className="h-4 w-4 mr-2" />
               New Formation
             </TabsTrigger>
-
           </TabsList>
 
           <TabsContent value="formations" className="animate-slide-in-right">
@@ -159,10 +173,8 @@ export default function Home() {
           <TabsContent value="new-formation" className="animate-slide-in-right">
             <FormationVisualizerNew />
           </TabsContent>
-
-
         </Tabs>
       </main>
     </div>
-  )
+  );
 }
