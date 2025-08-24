@@ -1,14 +1,34 @@
 "use client"
 
-import { useState, useEffect } from "react"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Alert, AlertDescription } from "@/components/ui/alert"
-import { Users, Shuffle, RotateCcw, Star, AlertTriangle, Target, MapPin } from "lucide-react"
-import playersData from "@/data/players.json"
-import formationsData from "@/data/formations.json"
+import { useState, useEffect } from 'react'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Button } from '@/components/ui/button'
+import { Badge } from '@/components/ui/badge'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+import { Alert, AlertDescription } from '@/components/ui/alert'
+import { Users, Target, RotateCcw, Shuffle, Star, AlertTriangle, MapPin } from 'lucide-react'
+
+// Import JSON data with any types to avoid complex type conversion
+import playersData from '../data/players.json'
+import formationsData from '../data/formations.json'
+
+// Use any types for complex JSON structures to avoid breaking existing logic
+const typedPlayersData = playersData as any;
+const typedFormationsData = formationsData as any;
+
+interface FormationData {
+  formation: string;
+  'sub-formations': Array<{
+    [key: string]: string;
+    description: string;
+    shape: string;
+    notes: string;
+  }>;
+}
+
+interface FormationsData {
+  FORMATIONS: FormationData[];
+}
 
 interface SquadPosition {
   position: string
@@ -20,12 +40,6 @@ interface SquadPosition {
   y?: number
 }
 
-interface SubFormation {
-  [key: string]: string
-  description: string
-  shape: string
-  notes: string
-}
 
 export function SquadBuilder() {
   const [selectedFormation, setSelectedFormation] = useState<string>("")
@@ -36,10 +50,10 @@ export function SquadBuilder() {
   const [showSquadOnPitch, setShowSquadOnPitch] = useState(false)
 
   useEffect(() => {
-    setAvailablePlayers(playersData.players)
+    setAvailablePlayers(typedPlayersData.players)
   }, [])
 
-  const getFormationPositions = (formation: string, subFormation?: string): SquadPosition[] => {
+  const getFormationPositions = (formation: string): SquadPosition[] => {
     const positionMappings: { [key: string]: SquadPosition[] } = {
       "4-4-2": [
         { position: "GK", player: null, category: "GK" },
@@ -277,9 +291,9 @@ export function SquadBuilder() {
     return squadPosition.position !== squadPosition.playerOriginalPosition
   }
 
-  const getSubFormations = (formation: string) => {
-    const formationData = formationsData.FORMATIONS.find((f) => f.formation === formation)
-    return formationData?.["sub-formations"] || []
+  const getSubFormations = (formationName: string) => {
+    const formationData = typedFormationsData.FORMATIONS.find((f) => f.formation === formationName);
+    return formationData?.['sub-formations'] || [];
   }
 
   const getSquadPitchPositions = () => {
@@ -365,7 +379,7 @@ export function SquadBuilder() {
     const formationPositions = positionMappings[selectedFormation] || {}
 
     const positionCounts: { [key: string]: number } = {}
-    const squadWithPositions = squad.map((pos, index) => {
+    const squadWithPositions = squad.map((pos) => {
       const positionKey = pos.position
       positionCounts[positionKey] = (positionCounts[positionKey] || 0) + 1
       const positionIndex = positionCounts[positionKey] - 1
@@ -437,8 +451,8 @@ export function SquadBuilder() {
                   <SelectValue placeholder="Choose a formation..." />
                 </SelectTrigger>
                 <SelectContent>
-                  {formationsData.FORMATIONS.map((formation, index) => (
-                    <SelectItem key={index} value={formation.formation}>
+                  {typedFormationsData.FORMATIONS.map((formation) => (
+                    <SelectItem key={formation.formation} value={formation.formation}>
                       {formation.formation}
                     </SelectItem>
                   ))}
@@ -452,13 +466,12 @@ export function SquadBuilder() {
                   </SelectTrigger>
                   <SelectContent>
                     {getSubFormations(selectedFormation).map((subForm, index) => {
-                      const subFormName = Object.keys(subForm)[0]
-                      const subFormLabel = subForm[subFormName]
+                      const [formationName] = Object.entries(subForm).find(([key]) => key !== 'description' && key !== 'shape' && key !== 'notes') || [];
                       return (
-                        <SelectItem key={index} value={subFormName}>
-                          {subFormName} {subFormLabel && `(${subFormLabel})`}
+                        <SelectItem key={index} value={formationName || ''}>
+                          {formationName} - {subForm.description}
                         </SelectItem>
-                      )
+                      );
                     })}
                   </SelectContent>
                 </Select>

@@ -5,6 +5,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { FormationVisualizer } from "@/components/formation-visualizer"
+import FormationVisualizerNew from "@/components/FormationVisualizer"
 import { PlayerPositionMatcher } from "@/components/player-position-matcher"
 import { SquadBuilder } from "@/components/squad-builder"
 import { FormationComparison } from "@/components/formation-comparison"
@@ -90,7 +91,7 @@ export default function Home() {
 
         {/* Main Tabs */}
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-          <TabsList className="grid w-full grid-cols-5 bg-card border">
+                      <TabsList className="grid w-full grid-cols-6 bg-card border">
             <TabsTrigger
               value="formations"
               className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground transition-all duration-300"
@@ -126,6 +127,13 @@ export default function Home() {
               <MapPin className="h-4 w-4 mr-2" />
               Pitch View
             </TabsTrigger>
+            <TabsTrigger
+              value="new-formation"
+              className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-blue-500 data-[state=active]:to-purple-500 data-[state=active]:text-white transition-all duration-300"
+            >
+              <Zap className="h-4 w-4 mr-2" />
+              New Formation
+            </TabsTrigger>
 
           </TabsList>
 
@@ -147,6 +155,9 @@ export default function Home() {
 
           <TabsContent value="pitch" className="animate-slide-in-right">
             <PitchVisualizer />
+          </TabsContent>
+          <TabsContent value="new-formation" className="animate-slide-in-right">
+            <FormationVisualizerNew />
           </TabsContent>
 
 

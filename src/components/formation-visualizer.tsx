@@ -44,8 +44,26 @@ export function FormationVisualizer() {
       });
     });
 
-    setFormations(formationsData.FORMATIONS);
-    setSelectedFormation(formationsData.FORMATIONS[0]);
+    // Convert the raw data into the typed Formation[] structure
+    const parsedFormations: Formation[] = formationsData.FORMATIONS.map((f: any) => ({
+      formation: f.formation,
+      "sub-formations": f["sub-formations"].map((sub: any) => {
+        // Find the dynamic key (the sub-formation name)
+        const subName = Object.keys(sub).find(
+          (k) => !["description", "shape", "notes"].includes(k)
+        );
+        return {
+          name: subName || "Unknown",
+          description: sub.description,
+          shape: sub.shape,
+          notes: sub.notes,
+          ...(subName ? { [subName]: sub[subName] } : {}),
+        } as SubFormation;
+      }),
+    }));
+
+    setFormations(parsedFormations);
+    setSelectedFormation(parsedFormations[0]);
   }, [])
 
   // Helper function to get the formation name from a sub-formation object

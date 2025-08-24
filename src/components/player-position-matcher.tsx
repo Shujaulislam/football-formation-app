@@ -82,7 +82,7 @@ export function PlayerPositionMatcher() {
   const getAllPositions = () => {
     if (!players) return []
 
-    const positions = []
+    const positions: Array<{ category: string; position: string; players: string[]; count: number }> = []
 
     // GK
     positions.push({ category: "GK", position: "GK", players: players.GK, count: players.GK.length })
@@ -604,7 +604,7 @@ export function PlayerPositionMatcher() {
                       <AlertCircle className="h-16 w-16 text-destructive mx-auto mb-4" />
                       <h3 className="text-lg font-semibold mb-2 text-destructive">No Players Available</h3>
                       <p className="text-muted-foreground mb-4">
-                        You don't have any players for the {selectedPosition} position.
+                        You don&apos;t have any players for the {selectedPosition} position.
                       </p>
                       <Badge variant="destructive">Position Gap Identified</Badge>
                     </div>

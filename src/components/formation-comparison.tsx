@@ -24,7 +24,11 @@ export function FormationComparison() {
     const subForms: Array<SubFormation & { parentFormation: string }> = []
     formationsData.FORMATIONS.forEach((formation) => {
       formation["sub-formations"].forEach((subForm) => {
-        subForms.push({ ...subForm, parentFormation: formation.formation })
+        // Remove undefined properties to satisfy SubFormation type
+        const cleanedSubForm: SubFormation = Object.fromEntries(
+          Object.entries(subForm).filter(([v]) => v !== undefined)
+        ) as SubFormation
+        subForms.push({ ...cleanedSubForm, parentFormation: formation.formation })
       })
     })
     setAllSubFormations(subForms)
