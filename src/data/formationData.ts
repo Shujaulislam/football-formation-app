@@ -39,36 +39,28 @@ export const sampleRoster: Player[] = (() => {
     });
   }
 
-  // Add players from other positions
-  Object.entries(playersData.players).forEach(([category, positions]) => {
-    if (category === 'GK') return;
-    
-    if (Array.isArray(positions)) {
-      // Handle array case (if any)
-      positions.forEach((name: string) => {
-        players.push({
-          id: playerId.toString(),
-          name,
-          number: playerId,
-          role: category.toUpperCase()
-        });
-        playerId++;
-      });
-    } else if (positions && typeof positions === 'object') {
-      // Handle object case
-      Object.entries(positions as Record<string, string[]>).forEach(([names ]) => {
-        if (Array.isArray(names)) {
-          names.forEach((name: string) => {
-            players.push({
-              id: playerId.toString(),
-              name,
-              number: playerId,
-              role: category.toUpperCase()
+  // Add players from other positions (DF, MF, FW)
+  const categories = ['DF', 'MF', 'FW'];
+  categories.forEach(category => {
+    if (playersData.players[category]) {
+      const positions = playersData.players[category];
+      if (typeof positions === 'object' && positions !== null) {
+        Object.entries(positions).forEach(([position, names]) => {
+          if (Array.isArray(names)) {
+            names.forEach((name: string) => {
+              if (name && name.trim()) { // Only add non-empty names
+                players.push({
+                  id: playerId.toString(),
+                  name,
+                  number: playerId,
+                  role: category
+                });
+                playerId++;
+              }
             });
-            playerId++;
-          });
-        }
-      });
+          }
+        });
+      }
     }
   });
 
@@ -77,9 +69,11 @@ export const sampleRoster: Player[] = (() => {
 
 // Convert existing formations data to our Formation interface
 export const formations: Formation[] = (() => {
-  if (!formationsData?.FORMATIONS) return [];
+  if (!formationsData?.FORMATIONS) {
+    return [];
+  }
 
-  return formationsData.FORMATIONS.map((formationData) => {
+  const result = formationsData.FORMATIONS.map((formationData, index) => {
     // Get the first sub-formation for now (we can expand this later)
     const subFormation = formationData["sub-formations"]?.[0];
     
@@ -117,12 +111,16 @@ export const formations: Formation[] = (() => {
       role: pos.category || 'MF'
     }));
 
-    return {
+    const formation = {
       id: formationData.formation,
       name: formationData.formation,
       positions: convertedPositions.length > 0 ? convertedPositions : getDefaultPositionsForFormation(formationData.formation)
     };
+
+    return formation;
   });
+
+  return result;
 })();
 
 // Helper function to generate default positions for formations
@@ -192,6 +190,45 @@ function getDefaultPositionsForFormation(formation: string): Position[] {
       { id: 'CM3', xPercent: 65, yPercent: 50, role: 'MF' },
       { id: 'ST1', xPercent: 35, yPercent: 15, role: 'FW' },
       { id: 'ST2', xPercent: 65, yPercent: 15, role: 'FW' },
+    ],
+    '3-4-3': [
+      { id: 'GK', xPercent: 50, yPercent: 95, role: 'GK' },
+      { id: 'CB1', xPercent: 25, yPercent: 75, role: 'DF' },
+      { id: 'CB2', xPercent: 50, yPercent: 75, role: 'DF' },
+      { id: 'CB3', xPercent: 75, yPercent: 75, role: 'DF' },
+      { id: 'LM', xPercent: 20, yPercent: 50, role: 'MF' },
+      { id: 'CM1', xPercent: 40, yPercent: 50, role: 'MF' },
+      { id: 'CM2', xPercent: 60, yPercent: 50, role: 'MF' },
+      { id: 'RM', xPercent: 80, yPercent: 50, role: 'MF' },
+      { id: 'LW', xPercent: 18, yPercent: 20, role: 'FW' },
+      { id: 'ST', xPercent: 50, yPercent: 10, role: 'FW' },
+      { id: 'RW', xPercent: 82, yPercent: 20, role: 'FW' },
+    ],
+    '4-2-3-1': [
+      { id: 'GK', xPercent: 50, yPercent: 95, role: 'GK' },
+      { id: 'LB', xPercent: 12, yPercent: 75, role: 'DF' },
+      { id: 'CB1', xPercent: 32, yPercent: 75, role: 'DF' },
+      { id: 'CB2', xPercent: 68, yPercent: 75, role: 'DF' },
+      { id: 'RB', xPercent: 88, yPercent: 75, role: 'DF' },
+      { id: 'CDM1', xPercent: 35, yPercent: 60, role: 'MF' },
+      { id: 'CDM2', xPercent: 65, yPercent: 60, role: 'MF' },
+      { id: 'CAM', xPercent: 50, yPercent: 35, role: 'MF' },
+      { id: 'LW', xPercent: 18, yPercent: 20, role: 'FW' },
+      { id: 'RW', xPercent: 82, yPercent: 20, role: 'FW' },
+      { id: 'ST', xPercent: 50, yPercent: 10, role: 'FW' },
+    ],
+    '4-1-4-1': [
+      { id: 'GK', xPercent: 50, yPercent: 95, role: 'GK' },
+      { id: 'LB', xPercent: 12, yPercent: 75, role: 'DF' },
+      { id: 'CB1', xPercent: 32, yPercent: 75, role: 'DF' },
+      { id: 'CB2', xPercent: 68, yPercent: 75, role: 'DF' },
+      { id: 'RB', xPercent: 88, yPercent: 75, role: 'DF' },
+      { id: 'CDM', xPercent: 50, yPercent: 60, role: 'MF' },
+      { id: 'LM', xPercent: 20, yPercent: 40, role: 'MF' },
+      { id: 'CM1', xPercent: 35, yPercent: 40, role: 'MF' },
+      { id: 'CM2', xPercent: 65, yPercent: 40, role: 'MF' },
+      { id: 'RM', xPercent: 80, yPercent: 40, role: 'MF' },
+      { id: 'ST', xPercent: 50, yPercent: 15, role: 'FW' },
     ]
   };
 
