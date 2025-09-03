@@ -1,6 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
+import playersData from "@/data/players.json"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
@@ -8,9 +9,10 @@ import { ScrollArea } from "@/components/ui/scroll-area"
 import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Progress } from "@/components/ui/progress"
-import { Users, Search, AlertCircle, CheckCircle, Target, Star, Zap } from "lucide-react"
-import playersData from "@/data/players.json"
-import formationsData from "@/data/formations.json"
+import { Users, Search, AlertCircle, CheckCircle, Target, Star, Zap, Info } from "lucide-react"
+import { calculatePlayerFlexibility, PlayerFlexibilityResult } from "@/lib/footballFlexibility"
+import { getFormationCompatibility, getAllFormations } from "@/data/formationCompatibility"
+import { getPositionCategory} from "@/lib/positionMapping"
 
 interface PlayerData {
   players: {
@@ -116,100 +118,73 @@ export function PlayerPositionMatcher() {
     return posData?.players || []
   }
 
-  const getPlayerVersatilityScore = (playerName: string): number => {
-    if (!players) return 0
+  const getPlayerFlexibility = (playerName: string): PlayerFlexibilityResult => {
+    if (!players) {
+      return {
+        playerName,
+        primaryPositions: [],
+        flexibilityScore: 0,
+        positionBreakdown: [],
+        footballLogic: "No player data available"
+      }
+    }
 
-    let positionCount = 0
-    const totalPositions = 13 // Total possible positions
+    // Get all positions for this player
+    const playerPositions: string[] = []
 
     // Check GK
-    if (players.GK.includes(playerName)) positionCount++
+    if (players.GK.includes(playerName)) playerPositions.push("GK")
 
     // Check DF positions
-    Object.values(players.DF).forEach((positionPlayers) => {
-      if (positionPlayers.includes(playerName)) positionCount++
+    Object.entries(players.DF).forEach(([position, playerList]) => {
+      if (playerList.includes(playerName)) playerPositions.push(position)
     })
 
     // Check MF positions
-    Object.values(players.MF).forEach((positionPlayers) => {
-      if (positionPlayers.includes(playerName)) positionCount++
+    Object.entries(players.MF).forEach(([position, playerList]) => {
+      if (playerList.includes(playerName)) playerPositions.push(position)
     })
 
     // Check FW positions
-    Object.values(players.FW).forEach((positionPlayers) => {
-      if (positionPlayers.includes(playerName)) positionCount++
+    Object.entries(players.FW).forEach(([position, playerList]) => {
+      if (playerList.includes(playerName)) playerPositions.push(position)
     })
 
-    // Convert to percentage with proper calculation
-    return Math.round((positionCount / totalPositions) * 100)
+    // Use the new football-aware flexibility calculation
+    return calculatePlayerFlexibility(playerName, playerPositions)
   }
 
   const getAllPlayersWithPositions = () => {
     if (!players) return []
 
-    const allPlayers: Array<{ name: string; positions: string[]; category: string; versatility: number }> = []
+    const allPlayers: Array<{ 
+      name: string; 
+      positions: string[]; 
+      category: string; 
+      flexibility: PlayerFlexibilityResult;
+    }> = []
 
-    // GK
-    players.GK.forEach((player) => {
+    // Collect all unique players
+    const uniquePlayers = new Set<string>()
+
+    // Add all players from all positions
+    players.GK.forEach(player => uniquePlayers.add(player))
+    Object.values(players.DF).forEach(playerList => playerList.forEach(player => uniquePlayers.add(player)))
+    Object.values(players.MF).forEach(playerList => playerList.forEach(player => uniquePlayers.add(player)))
+    Object.values(players.FW).forEach(playerList => playerList.forEach(player => uniquePlayers.add(player)))
+
+    // Process each unique player
+    uniquePlayers.forEach(playerName => {
+      const flexibility = getPlayerFlexibility(playerName)
+      const primaryCategory = flexibility.primaryPositions.length > 0 
+        ? getPositionCategory(flexibility.primaryPositions[0])
+        : "Unknown"
+
       allPlayers.push({
-        name: player,
-        positions: ["GK"],
-        category: "GK",
-        versatility: getPlayerVersatilityScore(player),
-      })
-    })
-
-    // DF
-    Object.entries(players.DF).forEach(([pos, playerList]) => {
-      playerList.forEach((player) => {
-        const existingPlayer = allPlayers.find((p) => p.name === player)
-        if (existingPlayer) {
-          existingPlayer.positions.push(pos)
-          existingPlayer.versatility = getPlayerVersatilityScore(player)
-        } else {
-          allPlayers.push({
-            name: player,
-            positions: [pos],
-            category: "DF",
-            versatility: getPlayerVersatilityScore(player),
-          })
-        }
-      })
-    })
-
-    // MF
-    Object.entries(players.MF).forEach(([pos, playerList]) => {
-      playerList.forEach((player) => {
-        const existingPlayer = allPlayers.find((p) => p.name === player)
-        if (existingPlayer) {
-          existingPlayer.positions.push(pos)
-          existingPlayer.versatility = getPlayerVersatilityScore(player)
-        } else {
-          allPlayers.push({
-            name: player,
-            positions: [pos],
-            category: "MF",
-            versatility: getPlayerVersatilityScore(player),
-          })
-        }
-      })
-    })
-
-    // FW
-    Object.entries(players.FW).forEach(([pos, playerList]) => {
-      playerList.forEach((player) => {
-        const existingPlayer = allPlayers.find((p) => p.name === player)
-        if (existingPlayer) {
-          existingPlayer.positions.push(pos)
-          existingPlayer.versatility = getPlayerVersatilityScore(player)
-        } else {
-          allPlayers.push({
-            name: player,
-            positions: [pos],
-            category: "FW",
-            versatility: getPlayerVersatilityScore(player),
-          })
-        }
+        name: playerName,
+        positions: flexibility.primaryPositions,
+        category: primaryCategory,
+        flexibility: flexibility
       })
     })
 
@@ -217,10 +192,38 @@ export function PlayerPositionMatcher() {
   }
 
   const checkFormationCompatibility = (formation: string) => {
-    const formationPositions = getFormationPositions(formation)
-    if (formationPositions.length === 0) return { compatibility: [], compatibilityScore: 0 }
+    // Use the new formation compatibility system
+    const formationData = getFormationCompatibility(formation)
+    if (!formationData) {
+      // Fallback to old system for formations not in new data
+      const formationPositions = getFormationPositions(formation)
+      if (formationPositions.length === 0) return { compatibility: [], compatibilityScore: 0 }
 
-    const compatibility = formationPositions.map((pos) => {
+      const compatibility = formationPositions.map((pos) => {
+        const availablePlayers = getAvailablePlayersForPosition(pos.position, pos.category)
+        const fallbackPlayers = getAllAvailablePlayersForCrossPosition(pos.position, pos.category)
+        const totalAvailable = availablePlayers.length + fallbackPlayers.length
+
+        return {
+          position: pos.position,
+          category: pos.category,
+          availablePlayers: availablePlayers.length,
+          fallbackPlayers: fallbackPlayers.length,
+          totalAvailable,
+          hasPlayers: totalAvailable > 0,
+          players: [...availablePlayers, ...fallbackPlayers.map((p) => `${p.name} (${p.position})`)],
+        }
+      })
+
+      const totalPositions = compatibility.length
+      const filledPositions = compatibility.filter((p) => p.hasPlayers).length
+      const compatibilityScore = totalPositions > 0 ? Math.round((filledPositions / totalPositions) * 100) : 0
+
+      return { compatibility, compatibilityScore }
+    }
+
+    // Use new formation compatibility system
+    const compatibility = formationData.positions.map((pos) => {
       const availablePlayers = getAvailablePlayersForPosition(pos.position, pos.category)
       const fallbackPlayers = getAllAvailablePlayersForCrossPosition(pos.position, pos.category)
       const totalAvailable = availablePlayers.length + fallbackPlayers.length
@@ -233,6 +236,8 @@ export function PlayerPositionMatcher() {
         totalAvailable,
         hasPlayers: totalAvailable > 0,
         players: [...availablePlayers, ...fallbackPlayers.map((p) => `${p.name} (${p.position})`)],
+        isRequired: pos.isRequired,
+        alternatives: pos.alternatives || []
       }
     })
 
@@ -240,7 +245,14 @@ export function PlayerPositionMatcher() {
     const filledPositions = compatibility.filter((p) => p.hasPlayers).length
     const compatibilityScore = totalPositions > 0 ? Math.round((filledPositions / totalPositions) * 100) : 0
 
-    return { compatibility, compatibilityScore }
+    return { 
+      compatibility, 
+      compatibilityScore,
+      formationData: {
+        description: formationData.description,
+        tacticalNotes: formationData.tacticalNotes
+      }
+    }
   }
 
   const getFormationPositions = (formation: string) => {
@@ -377,10 +389,10 @@ export function PlayerPositionMatcher() {
             <SelectValue placeholder="Formation Compatibility Check..." />
           </SelectTrigger>
           <SelectContent>
-            {formationsData.FORMATIONS.map((formation, index) => (
-              <SelectItem key={index} value={formation.formation}>
+            {getAllFormations().map((formation, index) => (
+              <SelectItem key={index} value={formation}>
                 <Zap className="h-4 w-4 mr-2 inline" />
-                {formation.formation}
+                {formation}
               </SelectItem>
             ))}
           </SelectContent>
@@ -399,9 +411,21 @@ export function PlayerPositionMatcher() {
           </CardHeader>
           <CardContent>
             {(() => {
-              const { compatibility, compatibilityScore } = checkFormationCompatibility(selectedFormationForCheck)
+              const result = checkFormationCompatibility(selectedFormationForCheck)
+              const { compatibility, compatibilityScore, formationData } = result
               return (
                 <div className="space-y-4">
+                  {formationData && (
+                    <div className="bg-muted/50 p-3 rounded-lg">
+                      <div className="flex items-start gap-2">
+                        <Info className="h-4 w-4 text-muted-foreground mt-0.5" />
+                        <div>
+                          <p className="text-sm font-medium">{formationData.description}</p>
+                          <p className="text-xs text-muted-foreground mt-1">{formationData.tacticalNotes}</p>
+                        </div>
+                      </div>
+                    </div>
+                  )}
                   <div className="flex items-center gap-4">
                     <Badge
                       variant={
@@ -458,7 +482,7 @@ export function PlayerPositionMatcher() {
           <CardContent>
             <div className="space-y-4">
               {getAllPlayersWithPositions()
-                .sort((a, b) => b.versatility - a.versatility)
+                .sort((a, b) => b.flexibility.flexibilityScore - a.flexibility.flexibilityScore)
                 .map((player, index) => (
                   <Card key={index} className="hover-lift">
                     <CardContent className="p-4">
@@ -475,11 +499,14 @@ export function PlayerPositionMatcher() {
                               </Badge>
                             ))}
                           </div>
+                          <div className="text-xs text-muted-foreground mt-1">
+                            {player.flexibility.footballLogic}
+                          </div>
                         </div>
                         <div className="text-right">
-                          <div className="font-semibold text-lg">{player.versatility}%</div>
-                          <div className="text-xs text-muted-foreground">Versatility</div>
-                          <Progress value={player.versatility} className="w-20 mt-1" />
+                          <div className="font-semibold text-lg">{player.flexibility.flexibilityScore}%</div>
+                          <div className="text-xs text-muted-foreground">Flexibility</div>
+                          <Progress value={player.flexibility.flexibilityScore} className="w-20 mt-1" />
                         </div>
                       </div>
                     </CardContent>
