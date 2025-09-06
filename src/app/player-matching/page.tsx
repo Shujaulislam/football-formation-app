@@ -1,12 +1,12 @@
-import React from 'react'
 import { PlayerPositionMatcher } from '@/components/player-position-matcher'
+import React from 'react'
 
-const page = () => {
+export default function PlayerMatchingPage() {
   return (
-    <div>
-      <PlayerPositionMatcher />
+    <div className="min-h-screen bg-gradient-to-br from-background via-card to-muted">
+      <div className="container mx-auto px-4 py-8">
+        <PlayerPositionMatcher />
+      </div>
     </div>
   )
 }
-
-export default page

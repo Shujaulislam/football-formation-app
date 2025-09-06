@@ -1,12 +1,12 @@
 import { SquadBuilder } from '@/components/squad-builder'
 import React from 'react'
 
-const page = () => {
+export default function SquadBuilderPage() {
   return (
-    <div>
-      <SquadBuilder />
+    <div className="min-h-screen bg-gradient-to-br from-background via-card to-muted">
+      <div className="container mx-auto px-4 py-8">
+        <SquadBuilder />
+      </div>
     </div>
   )
 }
-
-export default page
