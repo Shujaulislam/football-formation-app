@@ -2,6 +2,7 @@ import type React from "react"
 import type { Metadata } from "next"
 import { Work_Sans, Open_Sans } from "next/font/google"
 import "./globals.css"
+import { Navigation } from "@/components/navigation"
 
 const workSans = Work_Sans({
   subsets: ["latin"],
@@ -28,7 +29,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${workSans.variable} ${openSans.variable}`}>
-      <body className="font-sans antialiased">{children}</body>
+      <body className="font-sans antialiased">
+        {children}
+        <Navigation />
+      </body>
     </html>
   )
 }

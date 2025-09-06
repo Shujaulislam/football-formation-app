@@ -16,7 +16,7 @@ export default function Home() {
   const [activeTab, setActiveTab] = useState("formations");
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background via-card to-muted">
+    <div className="min-h-screen bg-gradient-to-br from-background via-card to-muted pb-20">
       {/* Header */}
       <header className="border-b bg-card/50 backdrop-blur-sm sticky top-0 z-50">
         <div className="container mx-auto px-4 py-4">
