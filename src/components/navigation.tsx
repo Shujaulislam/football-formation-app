@@ -1,6 +1,7 @@
 "use client"
 
 import { FloatingDock } from "@/components/ui/floating-dock"
+import { CompactModeToggle } from "@/components/ui/compact-mode-toggle"
 import { 
   BarChart3, 
   Target, 
@@ -8,7 +9,8 @@ import {
   GitCompare, 
   MapPin, 
   Zap,
-  Home
+  Home,
+  Palette
 } from "lucide-react"
 
 const navigationItems = [
@@ -46,6 +48,12 @@ const navigationItems = [
     title: "Formation Plotting",
     icon: <Zap className="h-5 w-5" />,
     href: "/formation-plotting"
+  },
+  {
+    title: "Theme Toggle",
+    icon: <Palette className="h-5 w-5" />,
+    href: "#",
+    isThemeToggle: true
   }
 ]
 
@@ -56,6 +64,7 @@ export function Navigation() {
         items={navigationItems}
         desktopClassName="bg-card/80 backdrop-blur-md border border-border/50 shadow-lg"
         mobileClassName="bg-card/80 backdrop-blur-md border border-border/50 shadow-lg"
+        themeToggleComponent={<CompactModeToggle />}
       />
     </div>
   )

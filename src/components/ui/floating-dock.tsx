@@ -1,3 +1,4 @@
+/* eslint-disable prefer-const */
 import { cn } from "@/lib/utils";
 import { IconLayoutNavbarCollapse } from "@tabler/icons-react";
 import {
@@ -16,15 +17,17 @@ export const FloatingDock = ({
   items,
   desktopClassName,
   mobileClassName,
+  themeToggleComponent,
 }: {
-  items: { title: string; icon: React.ReactNode; href: string }[];
+  items: { title: string; icon: React.ReactNode; href: string; isThemeToggle?: boolean }[];
   desktopClassName?: string;
   mobileClassName?: string;
+  themeToggleComponent?: React.ReactNode;
 }) => {
   return (
     <>
-      <FloatingDockDesktop items={items} className={desktopClassName} />
-      <FloatingDockMobile items={items} className={mobileClassName} />
+      <FloatingDockDesktop items={items} className={desktopClassName} themeToggleComponent={themeToggleComponent} />
+      <FloatingDockMobile items={items} className={mobileClassName} themeToggleComponent={themeToggleComponent} />
     </>
   );
 };
@@ -32,9 +35,11 @@ export const FloatingDock = ({
 const FloatingDockMobile = ({
   items,
   className,
+  themeToggleComponent,
 }: {
-  items: { title: string; icon: React.ReactNode; href: string }[];
+  items: { title: string; icon: React.ReactNode; href: string; isThemeToggle?: boolean }[];
   className?: string;
+  themeToggleComponent?: React.ReactNode;
 }) => {
   const [open, setOpen] = useState(false);
   return (
@@ -62,13 +67,19 @@ const FloatingDockMobile = ({
                 }}
                 transition={{ delay: (items.length - 1 - idx) * 0.05 }}
               >
-                <Link
-                  href={item.href}
-                  key={item.title}
-                  className="flex h-10 w-10 items-center justify-center rounded-full bg-gray-50 dark:bg-neutral-900 hover:bg-gray-100 dark:hover:bg-neutral-800 transition-colors"
-                >
-                  <div className="h-4 w-4">{item.icon}</div>
-                </Link>
+                {item.isThemeToggle ? (
+                  <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gray-50 dark:bg-neutral-900 hover:bg-gray-100 dark:hover:bg-neutral-800 transition-colors">
+                    {themeToggleComponent}
+                  </div>
+                ) : (
+                  <Link
+                    href={item.href}
+                    key={item.title}
+                    className="flex h-10 w-10 items-center justify-center rounded-full bg-gray-50 dark:bg-neutral-900 hover:bg-gray-100 dark:hover:bg-neutral-800 transition-colors"
+                  >
+                    <div className="h-4 w-4">{item.icon}</div>
+                  </Link>
+                )}
               </motion.div>
             ))}
           </motion.div>
@@ -87,9 +98,11 @@ const FloatingDockMobile = ({
 const FloatingDockDesktop = ({
   items,
   className,
+  themeToggleComponent,
 }: {
-  items: { title: string; icon: React.ReactNode; href: string }[];
+  items: { title: string; icon: React.ReactNode; href: string; isThemeToggle?: boolean }[];
   className?: string;
+  themeToggleComponent?: React.ReactNode;
 }) => {
   let mouseX = useMotionValue(Infinity);
   return (
@@ -102,7 +115,13 @@ const FloatingDockDesktop = ({
       )}
     >
       {items.map((item) => (
-        <IconContainer mouseX={mouseX} key={item.title} {...item} />
+        item.isThemeToggle ? (
+          <div key={item.title} className="flex h-10 w-10 items-center justify-center rounded-full bg-gray-200 dark:bg-neutral-800 hover:bg-gray-300 dark:hover:bg-neutral-700 transition-colors">
+            {themeToggleComponent}
+          </div>
+        ) : (
+          <IconContainer mouseX={mouseX} key={item.title} {...item} />
+        )
       ))}
     </motion.div>
   );
@@ -118,6 +137,7 @@ function IconContainer({
   title: string;
   icon: React.ReactNode;
   href: string;
+  isThemeToggle?: boolean;
 }) {
   let ref = useRef<HTMLDivElement>(null);
 
